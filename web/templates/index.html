@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RFM Clustering</title>
+</head>
+<body>
+
+    <h2>RFM K-Means Clustering</h2>
+
+    <form method="POST">
+        <label>Jumlah Cluster:</label>
+        <input type="number" name="cluster" required>
+        <button type="submit">Proses</button>
+    </form>
+
+    {% if result %}
+    <h3>Hasil Clustering:</h3>
+    {{ result|safe }}
+    {% endif %}
+
+</body>
+</html>
