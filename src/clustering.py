@@ -1,19 +1,20 @@
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 import pickle
+import pandas as pd
+import matplotlib.pyplot as plt
 
-def run_kmeans(rfm, n_clusters):
-
+def cluster_rfm(rfm, k=4):
     scaler = StandardScaler()
-    rfm_scaled = scaler.fit_transform(rfm)
+    scaled = scaler.fit_transform(rfm)
 
-    model = KMeans(n_clusters=n_clusters, random_state=42)
-    labels = model.fit_predict(rfm_scaled)
+    model = KMeans(n_clusters=k, random_state=42)
+    clusters = model.fit_predict(scaled)
 
-    rfm['Cluster'] = labels
+    rfm["Cluster"] = clusters
+    rfm.to_csv("output/cluster_result.csv")
 
-    # Save model
-    with open('models/kmeans.pkl', 'wb') as f:
+    with open("models/kmeans.pkl", "wb") as f:
         pickle.dump(model, f)
 
     return rfm

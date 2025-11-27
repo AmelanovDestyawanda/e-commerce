@@ -1,25 +1,26 @@
-from flask import Flask, render_template, request
-from src.preprocess import preprocess_data
-from src.rfm import create_rfm
-from src.clustering import run_kmeans
+from src.load_data import load_data
+from src.preprocess import clean_data
+from src.rfm import calculate_rfm
+from src.clustering import cluster_rfm
+from src.visualization import elbow_method
 
-app = Flask(__name__)
+def main():
+    print("Loading data...")
+    df = load_data()
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    result = None
+    print("Cleaning...")
+    df = clean_data(df)
 
-    if request.method == "POST":
-        n_clusters = int(request.form['cluster'])
+    print("Calculating RFM...")
+    rfm = calculate_rfm(df)
 
-        df = preprocess_data("data/ecom.csv")
-        rfm = create_rfm(df)
-        clustered = run_kmeans(rfm, n_clusters)
+    print("Elbow plot...")
+    elbow_method(rfm[["Recency", "Frequency", "Monetary"]])
 
-        clustered.to_csv("output/cluster_result.csv")
-        result = clustered.head(20).to_html()
+    print("Clustering...")
+    cluster_rfm(rfm)
 
-    return render_template("index.html", result=result)
+    print("Done! Check folder output/ and models/")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    main()

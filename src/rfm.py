@@ -1,15 +1,15 @@
 import pandas as pd
-from datetime import timedelta
 
-def create_rfm(df):
+def calculate_rfm(df):
+    reference_date = df["InvoiceDate"].max() + pd.Timedelta(days=1)
 
-    ref_date = df['InvoiceDate'].max() + timedelta(days=1)
-
-    rfm = df.groupby('CustomerID').agg({
-        'InvoiceDate': lambda x: (ref_date - x.max()).days,
-        'InvoiceNo': 'nunique',
-        'TotalPrice': 'sum'
+    rfm = df.groupby("CustomerID").agg({
+        "InvoiceDate": lambda x: (reference_date - x.max()).days,
+        "InvoiceNo": "count",
+        "TotalPrice": "sum"
     })
 
-    rfm.columns = ['Recency', 'Frequency', 'Monetary']
+    rfm.columns = ["Recency", "Frequency", "Monetary"]
+
+    rfm.to_csv("output/rfm_table.csv", index=True)
     return rfm

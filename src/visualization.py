@@ -1,12 +1,15 @@
 import matplotlib.pyplot as plt
-import seaborn as sns
+from sklearn.cluster import KMeans
 
-def cluster_plot(rfm):
-    plt.figure(figsize=(6,4))
-    sns.scatterplot(
-        x=rfm['Recency'],
-        y=rfm['Monetary'],
-        hue=rfm['Cluster'],
-        palette='tab10'
-    )
-    plt.savefig('output/plots/rfm_clusters.png')
+def elbow_method(data):
+    wcss = []
+    for k in range(1, 11):
+        km = KMeans(n_clusters=k)
+        km.fit(data)
+        wcss.append(km.inertia_)
+
+    plt.plot(range(1, 11), wcss, marker="o")
+    plt.title("Elbow Method")
+    plt.xlabel("Clusters")
+    plt.ylabel("WCSS")
+    plt.savefig("output/elbow_plot.png")
