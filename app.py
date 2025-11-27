@@ -29,12 +29,12 @@ def main():
         df = load_data()
         print(f"✓ Data loaded: {len(df)} rows, {len(df.columns)} columns")
     except FileNotFoundError:
-        print("❌ Error: File 'data/online_retail.csv' tidak ditemukan!")
+        print(" Error: File 'data/online_retail.csv' tidak ditemukan!")
         print("\nPastikan file CSV Anda ada di folder 'data/' dengan nama 'online_retail.csv'")
         print("Atau ubah path di src/load_data.py")
         return
     except Exception as e:
-        print(f"❌ Error loading data: {e}")
+        print(f" Error loading data: {e}")
         return
 
     # 2. Clean data
@@ -44,7 +44,7 @@ def main():
         df = clean_data(df)
         print(f"✓ Data cleaned: {len(df)} rows remaining ({df_original - len(df)} rows removed)")
     except Exception as e:
-        print(f"❌ Error cleaning data: {e}")
+        print(f" Error cleaning data: {e}")
         return
 
     # 3. Calculate RFM
@@ -56,7 +56,7 @@ def main():
         print(f"  - Frequency range: {rfm['Frequency'].min()}-{rfm['Frequency'].max()} transactions")
         print(f"  - Monetary range: ${rfm['Monetary'].min():.2f}-${rfm['Monetary'].max():.2f}")
     except Exception as e:
-        print(f"❌ Error calculating RFM: {e}")
+        print(f" Error calculating RFM: {e}")
         return
 
     # 4. Elbow method
@@ -64,10 +64,10 @@ def main():
     try:
         elbow_method(rfm[["Recency", "Frequency", "Monetary"]])
         print("✓ Elbow plot saved to output/elbow_plot.png")
-        print("\n💡 Tip: Lihat grafik elbow untuk menentukan jumlah cluster optimal")
+        print("\n Tip: Lihat grafik elbow untuk menentukan jumlah cluster optimal")
         print("   Cari 'siku' pada grafik dimana penurunan WCSS mulai melambat")
     except Exception as e:
-        print(f"❌ Error creating elbow plot: {e}")
+        print(f" Error creating elbow plot: {e}")
         return
 
     # 5. Clustering
@@ -82,38 +82,38 @@ def main():
                     k = int(k_input)
                 
                 if k < 2:
-                    print("⚠ Jumlah cluster minimal adalah 2. Coba lagi.")
+                    print(" Jumlah cluster minimal adalah 2. Coba lagi.")
                     continue
                 elif k > 10:
-                    print("⚠ Jumlah cluster terlalu banyak (max 10). Coba lagi.")
+                    print(" Jumlah cluster terlalu banyak (max 10). Coba lagi.")
                     continue
                 else:
                     break
             except ValueError:
-                print("⚠ Input tidak valid. Masukkan angka!")
+                print(" Input tidak valid. Masukkan angka!")
         
         rfm = cluster_rfm(rfm, k=k)
         print(f"\n✓ Clustering completed with K={k}")
         
     except KeyboardInterrupt:
-        print("\n\n⚠ Process interrupted by user")
+        print("\n\n Process interrupted by user")
         return
     except Exception as e:
-        print(f"❌ Error during clustering: {e}")
+        print(f" Error during clustering: {e}")
         return
 
     # Summary
     print("\n" + "="*60)
-    print("✅ PROCESS COMPLETED SUCCESSFULLY!")
+    print(" PROCESS COMPLETED SUCCESSFULLY!")
     print("="*60)
-    print("\n📁 Output files:")
-    print("  📊 output/rfm_table.csv          - RFM metrics per customer")
-    print("  📊 output/cluster_result.csv     - Customer segments")
-    print("  📈 output/elbow_plot.png         - Elbow method visualization")
-    print("  📈 output/cluster_plot.png       - Cluster visualization")
-    print("  🤖 models/kmeans.pkl             - Trained K-Means model + scaler")
+    print("\n Output files:")
+    print("   output/rfm_table.csv          - RFM metrics per customer")
+    print("   output/cluster_result.csv     - Customer segments")
+    print("   output/elbow_plot.png         - Elbow method visualization")
+    print("   output/cluster_plot.png       - Cluster visualization")
+    print("   models/kmeans.pkl             - Trained K-Means model + scaler")
     
-    print("\n🚀 Next steps:")
+    print("\n Next steps:")
     print("  1. Analisis karakteristik setiap cluster di output/cluster_result.csv")
     print("  2. Beri nama segment (contoh: Champions, Loyal, At Risk, Lost)")
     print("  3. Gunakan predict.py untuk prediksi customer baru")
@@ -125,8 +125,8 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print("\n\n⚠ Process interrupted by user")
+        print("\n\n Process interrupted by user")
     except Exception as e:
-        print(f"\n❌ Unexpected error: {e}")
+        print(f"\n Unexpected error: {e}")
         import traceback
         traceback.print_exc()
