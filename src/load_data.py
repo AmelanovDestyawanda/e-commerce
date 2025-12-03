@@ -1,6 +1,6 @@
 import pandas as pd
 
-def load_data(path="data/online_retail.csv"):
+def load_data(path="data/ecom.csv"):
     """
     Load data dari CSV dengan auto-detect delimiter
     """
